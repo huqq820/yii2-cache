@@ -11,7 +11,7 @@ use common\models\RedisConnecter;
  * @author oneday
  *
  */
-class CacheComponent extends Component
+abstract class AbstractCacheService extends Component
 {
     // 命名空间默认缓存时长，单位秒
     public $cacheTime = 0;
@@ -22,24 +22,13 @@ class CacheComponent extends Component
     // 命名空间项目名称
     public $projectName = '';
     
-    
     /**
      * 获取指定cachekey的缓存内容
      * @param string $cacheKey      缓存key
      * @param string $isMaster      默认从库读取
      * @return string
      */
-    public function getCacheContent($cacheKey, $isMaster = false)
-    {
-        if (empty($cacheKey)) {
-            return false;
-        }
-        $redisObj = new RedisConnecter();
-        $cacheObj = $redisObj->connRedis($this->cacheInstance, $isMaster);
-        $content = $cacheObj->get($cacheKey);
-        return $content;
-    }
-    
+    protected abstract function getCacheContent($cacheKey, $isMaster = false);
     
     /**
      * 设置指定cachekey的缓存内容
@@ -48,36 +37,14 @@ class CacheComponent extends Component
      * @param string $content
      * @return boolean
      */
-    public function setCacheContent($cacheKey, $cacheTime, $content)
-    {
-        if (empty($cacheKey) || empty($cacheTime) || empty($content)) {
-            return false;
-        }
-        $redisObj = new RedisConnecter();
-        $cacheObj = $redisObj->connRedis($this->cacheInstance, true);
-        $res = $cacheObj->setex($cacheKey, $cacheTime, $content);
-        return $res;
-    }
-    
+    protected abstract function setCacheContent($cacheKey, $cacheTime, $content);
     
     /**
      * 批量删除指定key的缓存
      * @param array $cacheKeys
      * @return boolean
      */
-    public function deleteCacheContent($cacheKeys)
-    {
-        if (empty($cacheKeys)) {
-            return false;
-        }
-        if (!is_array($cacheKeys)) {
-            $cacheKeys = array($cacheKeys);
-        }
-        $redisObj = new RedisConnecter();
-        $cacheObj = $redisObj->connRedis($this->cacheInstance, true);
-        $res = $cacheObj->delete($cacheKeys);
-        return $res;
-    }
+    protected abstract function deleteCacheContent($cacheKeys);
     
     
     /**
