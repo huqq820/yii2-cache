@@ -1,0 +1,24 @@
+{
+    "name": "huqq/yii2-cache",
+    "type": "library",
+	"description": "Yii2 Cache extension",
+	"keywords": ["yii2","cache"],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "huqq",
+            "email": "379602459@qq.com"
+        }
+    ],
+	"autoload": {
+        "psr-4": {
+            "huqq\\cache\\": "src/"
+        }
+    }
+}
